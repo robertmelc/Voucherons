@@ -164,35 +164,105 @@
   .hero-content {
     position: relative;
     z-index: 2;
-    max-width: 700px;
+    max-width: 560px;
   }
 
-  .hero-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(45,202,170,0.1);
-    border: 1px solid rgba(45,202,170,0.3);
-    color: var(--teal-glow);
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 7px 16px;
-    border-radius: 40px;
-    margin-bottom: 32px;
+  /* ── MONEY+KEY=MONKEY CLAIM ── */
+  .mk-claim {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 28px;
     animation: fadeUp 0.8s ease both;
   }
-  .hero-tag::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--teal-glow);
-    border-radius: 50%;
-    animation: pulse 2s ease infinite;
+  .mk-morph-wrap {
+    position: relative;
+    height: 52px;
+    display: flex;
+    align-items: center;
   }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.6); }
+  .mk-money-row, .mk-monkey-row {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    left: 0;
+  }
+  .mk-money-row {
+    animation: mkRowOut 5s ease infinite;
+  }
+  .mk-monkey-row {
+    animation: mkRowIn 5s ease infinite;
+  }
+  @keyframes mkRowOut {
+    0%   { opacity:0; filter:blur(8px); transform:scale(0.92); }
+    8%   { opacity:1; filter:blur(0);   transform:scale(1); }
+    60%  { opacity:1; filter:blur(0);   transform:scale(1); }
+    75%  { opacity:0; filter:blur(10px); transform:scale(1.05); }
+    100% { opacity:0; }
+  }
+  @keyframes mkRowIn {
+    0%   { opacity:0; filter:blur(14px); transform:scale(1.08); }
+    70%  { opacity:0; filter:blur(14px); transform:scale(1.08); }
+    85%  { opacity:1; filter:blur:0;     transform:scale(1); }
+    95%  { opacity:1; filter:blur(0);    transform:scale(1); }
+    100% { opacity:0; filter:blur(8px); }
+  }
+  .mk-txt-money {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    line-height: 1;
+  }
+  .mk-txt-plus {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--teal-glow);
+    line-height: 1;
+    animation: mkPlusIn 5s ease infinite;
+  }
+  @keyframes mkPlusIn {
+    0%,15% { opacity:0; transform:scale(0.5); }
+    28%    { opacity:1; transform:scale(1); }
+    60%    { opacity:1; }
+    74%    { opacity:0; }
+    100%   { opacity:0; }
+  }
+  .mk-txt-key {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--teal-glow);
+    line-height: 1;
+    animation: mkKeyIn 5s ease infinite;
+  }
+  @keyframes mkKeyIn {
+    0%,18% { opacity:0; transform:translateX(16px); }
+    32%    { opacity:1; transform:translateX(0); }
+    60%    { opacity:1; }
+    74%    { opacity:0; }
+    100%   { opacity:0; }
+  }
+  .mk-txt-monkey {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .mk-m1 { color: var(--white); }
+  .mk-m2 { color: var(--teal-glow); }
+  .mk-unlock {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(45,202,170,0.55);
+    animation: fadeUp 0.8s 0.4s ease both;
   }
 
   h1 {
@@ -275,37 +345,311 @@
   /* 3D card floating visual */
   .hero-visual {
     position: absolute;
-    right: 5%;
+    right: 3%;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-52%);
     z-index: 2;
-    animation: heroFloat 6s ease-in-out infinite;
-  }
-  @keyframes heroFloat {
-    0%, 100% { transform: translateY(-50%) rotate(-2deg); }
-    50% { transform: translateY(calc(-50% - 20px)) rotate(1deg); }
+    perspective: 1200px;
   }
 
-  .card-3d {
-    width: 340px;
-    height: 210px;
-    background: linear-gradient(135deg, rgba(13,74,74,0.9) 0%, rgba(29,122,110,0.8) 50%, rgba(45,202,170,0.3) 100%);
-    border-radius: 20px;
-    border: 1px solid rgba(45,202,170,0.4);
-    padding: 28px;
+  .hero-visual-wrap {
     position: relative;
+    width: 380px;
+    height: 440px;
+  }
+
+  /* ── VOUCHER (top, further away, tilted) ── */
+  /* ── VOUCHER — swap cycle ── */
+  .v3d-voucher {
+    position: absolute;
+    top: 0;
+    left: 20px;
+    width: 320px;
+    border-radius: 18px;
     overflow: hidden;
+    border: 1px solid rgba(45,202,170,0.2);
+    transform-origin: center center;
+    animation: voucherSwap 10s ease-in-out infinite;
+    /* start: top/back position */
+    transform: rotateX(14deg) rotateY(-12deg) rotateZ(-8deg) scale(0.92);
     box-shadow:
-      0 30px 80px rgba(0,0,0,0.5),
-      0 0 60px rgba(45,202,170,0.15),
-      inset 0 1px 0 rgba(255,255,255,0.1);
+      0 16px 50px rgba(0,0,0,0.45),
+      0 0 20px rgba(45,202,170,0.08),
+      inset 0 1px 0 rgba(255,255,255,0.08);
+    z-index: 1;
+  }
+  @keyframes voucherSwap {
+    /* Phase 1: voucher is TOP/BACK — small, tilted, behind */
+    0%    { transform: rotateX(14deg) rotateY(-12deg) rotateZ(-8deg) scale(0.92) translate(20px, 0px);
+            box-shadow: 0 16px 50px rgba(0,0,0,0.45), 0 0 20px rgba(45,202,170,0.08), inset 0 1px 0 rgba(255,255,255,0.08);
+            z-index: 1; }
+    /* float gently */
+    15%   { transform: rotateX(12deg) rotateY(-10deg) rotateZ(-7deg) scale(0.92) translate(20px, -10px);
+            z-index: 1; }
+    /* Phase 2: start swap — move forward */
+    35%   { transform: rotateX(12deg) rotateY(-10deg) rotateZ(-7deg) scale(0.92) translate(20px, -10px);
+            z-index: 1; }
+    /* crossing point */
+    50%   { transform: rotateX(4deg) rotateY(-4deg) rotateZ(-3deg) scale(0.98) translate(10px, 20px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 40px rgba(45,202,170,0.15), inset 0 1px 0 rgba(255,255,255,0.1);
+            z-index: 3; }
+    /* Phase 3: voucher is now BOTTOM/FRONT — large, less tilted */
+    65%   { transform: rotateX(-6deg) rotateY(8deg) rotateZ(6deg) scale(1.06) translate(0px, 230px);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.65), 0 0 60px rgba(45,202,170,0.18), inset 0 1px 0 rgba(255,255,255,0.12);
+            z-index: 3; }
+    /* float gently at bottom */
+    80%   { transform: rotateX(-5deg) rotateY(7deg) rotateZ(5deg) scale(1.06) translate(0px, 218px);
+            z-index: 3; }
+    /* Phase 4: swap back */
+    90%   { transform: rotateX(-5deg) rotateY(7deg) rotateZ(5deg) scale(1.06) translate(0px, 218px);
+            z-index: 3; }
+    100%  { transform: rotateX(14deg) rotateY(-12deg) rotateZ(-8deg) scale(0.92) translate(20px, 0px);
+            box-shadow: 0 16px 50px rgba(0,0,0,0.45), 0 0 20px rgba(45,202,170,0.08), inset 0 1px 0 rgba(255,255,255,0.08);
+            z-index: 1; }
+  }
+
+  /* voucher bg */
+  .v3d-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 30% 20%, rgba(29,122,110,0.5) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(45,202,170,0.15) 0%, transparent 50%),
+      linear-gradient(145deg, #0a2e2e 0%, #061a1a 60%, #040e0e 100%);
+  }
+  .v3d-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(45,202,170,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(45,202,170,0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  .v3d-shimmer {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 40%, rgba(45,202,170,0.05) 50%, transparent 60%);
+    background-size: 200% 100%;
+    animation: v3dShimmer 3s ease infinite;
+  }
+  @keyframes v3dShimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .v3d-content {
+    position: relative;
+    z-index: 2;
+    padding: 20px 20px 0;
+  }
+  .v3d-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .v3d-brand-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(45,202,170,0.6);
+    margin-bottom: 3px;
+  }
+  .v3d-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #f0faf8;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .v3d-title span { color: #2dcaaa; }
+  .v3d-subtitle {
+    font-size: 9px;
+    color: rgba(240,250,248,0.35);
+    margin-top: 2px;
+  }
+  /* mini monkey on voucher */
+  .v3d-monkey-mini {
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+    animation: miniFloat 4s ease-in-out infinite;
+  }
+  @keyframes miniFloat {
+    0%,100% { transform: rotate(-3deg); }
+    50%     { transform: rotate(3deg) translateY(-4px); }
+  }
+  .v3d-divider {
+    display: flex;
+    align-items: center;
+    margin: 0 -20px;
+  }
+  .v3d-notch {
+    width: 14px; height: 14px;
+    background: #061a1a;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .v3d-perf {
+    flex: 1;
+    border-top: 1.5px dashed rgba(45,202,170,0.2);
+  }
+  .v3d-middle {
+    padding: 14px 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .v3d-gift-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(45,202,170,0.08);
+    border: 1px solid rgba(45,202,170,0.2);
+    border-radius: 30px;
+    padding: 4px 12px;
+    width: fit-content;
+  }
+  .v3d-dot {
+    width: 5px; height: 5px;
+    background: #2dcaaa;
+    border-radius: 50%;
+    animation: giftPulse3 2s ease infinite;
+  }
+  @keyframes giftPulse3 {
+    0%,100% { opacity:1; transform:scale(1); }
+    50%     { opacity:0.4; transform:scale(0.6); }
+  }
+  .v3d-gift-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #2dcaaa;
+  }
+  .v3d-for-label {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(240,250,248,0.25);
+  }
+  .v3d-for-name {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: #f0faf8;
+    letter-spacing: -0.01em;
+  }
+  .v3d-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .v3d-meta-label {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(240,250,248,0.22);
+  }
+  .v3d-meta-value { font-size: 11px; font-weight: 600; color: rgba(240,250,248,0.6); }
+  .v3d-code { font-size: 13px; font-weight: 800; letter-spacing: 0.14em; color: #2dcaaa; }
+  .v3d-stub {
+    position: relative;
+    z-index: 2;
+    padding: 12px 20px;
+    background: rgba(45,202,170,0.05);
+    border-top: 1px solid rgba(45,202,170,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .v3d-stub-logo {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .v3d-stub-wm {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+  }
+  .v3d-stub-wm .w1 { color: rgba(240,250,248,0.6); }
+  .v3d-stub-wm .w2 { color: #2dcaaa; }
+  .v3d-stub-claim {
+    font-size: 7px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(45,202,170,0.35);
+  }
+  .v3d-barcode {
+    display: flex;
+    gap: 1.5px;
+    align-items: flex-end;
+    height: 20px;
+    opacity: 0.2;
+  }
+  .v3d-bar { background: #2dcaaa; border-radius: 1px; width: 1.5px; }
+
+  /* ── PAYMENT CARD — swap cycle (opposite phase) ── */
+  .card-3d {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 340px;
+    height: 205px;
+    background: linear-gradient(135deg, rgba(13,74,74,0.95) 0%, rgba(29,122,110,0.85) 50%, rgba(45,202,170,0.35) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(45,202,170,0.45);
+    padding: 24px 28px;
+    transform-origin: center center;
+    overflow: hidden;
+    /* start: bottom/front position */
+    transform: rotateX(-6deg) rotateY(8deg) rotateZ(6deg) scale(1.06);
+    box-shadow:
+      0 40px 100px rgba(0,0,0,0.65),
+      0 0 60px rgba(45,202,170,0.18),
+      inset 0 1px 0 rgba(255,255,255,0.12);
+    animation: cardSwap 10s ease-in-out infinite;
+    z-index: 2;
+  }
+  @keyframes cardSwap {
+    /* Phase 1: card is BOTTOM/FRONT — large, less tilted */
+    0%    { transform: rotateX(-6deg) rotateY(8deg) rotateZ(6deg) scale(1.06) translate(0px, 0px);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.65), 0 0 60px rgba(45,202,170,0.18), inset 0 1px 0 rgba(255,255,255,0.12);
+            z-index: 2; }
+    /* float at bottom */
+    15%   { transform: rotateX(-5deg) rotateY(7deg) rotateZ(5deg) scale(1.06) translate(0px, -14px);
+            z-index: 2; }
+    /* Phase 2: start swap — move back/up */
+    35%   { transform: rotateX(-5deg) rotateY(7deg) rotateZ(5deg) scale(1.06) translate(0px, -14px);
+            z-index: 2; }
+    /* crossing */
+    50%   { transform: rotateX(4deg) rotateY(-2deg) rotateZ(-2deg) scale(0.98) translate(10px, -200px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(45,202,170,0.1), inset 0 1px 0 rgba(255,255,255,0.08);
+            z-index: 1; }
+    /* Phase 3: card is now TOP/BACK — small, tilted */
+    65%   { transform: rotateX(14deg) rotateY(-12deg) rotateZ(-9deg) scale(0.9) translate(20px, -230px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 16px rgba(45,202,170,0.06), inset 0 1px 0 rgba(255,255,255,0.06);
+            z-index: 1; }
+    /* float at top */
+    80%   { transform: rotateX(12deg) rotateY(-10deg) rotateZ(-8deg) scale(0.9) translate(20px, -242px);
+            z-index: 1; }
+    /* Phase 4: swap back */
+    90%   { transform: rotateX(12deg) rotateY(-10deg) rotateZ(-8deg) scale(0.9) translate(20px, -242px);
+            z-index: 1; }
+    100%  { transform: rotateX(-6deg) rotateY(8deg) rotateZ(6deg) scale(1.06) translate(0px, 0px);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.65), 0 0 60px rgba(45,202,170,0.18), inset 0 1px 0 rgba(255,255,255,0.12);
+            z-index: 2; }
   }
   .card-3d::before {
     content: '';
     position: absolute;
     top: -50%; left: -50%;
     width: 200%; height: 200%;
-    background: conic-gradient(from 0deg, transparent 0%, rgba(45,202,170,0.05) 20%, transparent 40%);
+    background: conic-gradient(from 0deg, transparent 0%, rgba(45,202,170,0.06) 20%, transparent 40%);
     animation: cardShine 4s linear infinite;
   }
   @keyframes cardShine {
@@ -316,21 +660,21 @@
     width: 36px; height: 28px;
     background: linear-gradient(135deg, #c8a84b, #f0d060);
     border-radius: 6px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     position: relative;
     z-index: 1;
   }
   .card-number {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 16px;
+    font-size: 15px;
     letter-spacing: 0.2em;
     color: rgba(240,250,248,0.7);
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     position: relative;
     z-index: 1;
   }
   .card-name {
-    font-size: 13px;
+    font-size: 12px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--white);
@@ -340,32 +684,15 @@
   }
   .card-logo {
     position: absolute;
-    bottom: 24px; right: 24px;
+    bottom: 22px; right: 24px;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 800;
     color: var(--teal-glow);
     z-index: 1;
   }
-
-  /* second card behind */
-  .card-3d-back {
-    width: 300px;
-    height: 185px;
-    position: absolute;
-    top: 30px; right: -30px;
-    background: linear-gradient(135deg, rgba(10,46,46,0.7), rgba(6,26,26,0.9));
-    border-radius: 18px;
-    border: 1px solid rgba(45,202,170,0.2);
-    z-index: -1;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-  }
-
-  .hero-visual-wrap {
-    position: relative;
-    width: 380px;
-    height: 320px;
-  }
+  /* card glow underneath -->*/
+  .card-3d-back { display: none; }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
@@ -783,10 +1110,9 @@
   }
 
   /* ── RESPONSIVE ── */
-  @media (max-width: 1024px) {
+  @media (max-width: 1100px) {
     nav { padding: 16px 24px; }
     nav ul { display: none; }
-    /* lang toggle blíže k logu na mobilech */
     .lang-toggle { top: 18px; right: 20px; z-index: 999; }
     .hero { padding: 120px 30px 80px; }
     .hero-visual { display: none; }
@@ -855,7 +1181,95 @@
   <div class="particles" id="particles"></div>
 
   <div class="hero-content">
-    <div class="hero-tag" data-en="Payment & Loyalty Technology" data-cs="Platební a věrnostní technologie">Payment & Loyalty Technology</div>
+    <!-- Orangutan mascot icon -->
+    <div style="margin-bottom:20px; animation: fadeUp 0.6s ease both;">
+      <svg viewBox="0 0 200 200" width="110" height="110" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="hbg1" cx="40%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#1a9a82"/>
+            <stop offset="100%" stop-color="#061a1a"/>
+          </radialGradient>
+          <radialGradient id="hfur1" cx="50%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#e07820"/>
+            <stop offset="60%" stop-color="#b85816"/>
+            <stop offset="100%" stop-color="#8a3e0e"/>
+          </radialGradient>
+          <radialGradient id="hface1" cx="50%" cy="45%" r="60%">
+            <stop offset="0%" stop-color="#2e1608"/>
+            <stop offset="100%" stop-color="#1a0c04"/>
+          </radialGradient>
+          <filter id="hs1"><feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#061a1a" flood-opacity="0.7"/></filter>
+        </defs>
+        <rect width="200" height="200" rx="44" fill="url(#hbg1)"/>
+        <line x1="0" y1="50" x2="200" y2="50" stroke="rgba(45,202,170,0.05)" stroke-width="1"/>
+        <line x1="0" y1="100" x2="200" y2="100" stroke="rgba(45,202,170,0.05)" stroke-width="1"/>
+        <line x1="0" y1="150" x2="200" y2="150" stroke="rgba(45,202,170,0.05)" stroke-width="1"/>
+        <line x1="50" y1="0" x2="50" y2="200" stroke="rgba(45,202,170,0.05)" stroke-width="1"/>
+        <line x1="100" y1="0" x2="100" y2="200" stroke="rgba(45,202,170,0.05)" stroke-width="1"/>
+        <line x1="150" y1="0" x2="150" y2="200" stroke="rgba(45,202,170,0.05)" stroke-width="1"/>
+        <!-- wild hair -->
+        <path d="M68 88 Q44 62 38 36 Q36 22 48 26 Q58 30 60 52 Q64 70 70 84Z" fill="#c86818"/>
+        <path d="M76 80 Q58 52 56 28 Q55 14 66 20 Q76 26 74 48 Q74 64 78 78Z" fill="#dc7820"/>
+        <path d="M86 74 Q76 44 80 22 Q82 10 92 18 Q100 24 96 46 Q92 62 88 72Z" fill="#c86018"/>
+        <path d="M100 70 Q96 38 102 18 Q104 8 114 16 Q122 22 116 44 Q112 60 102 68Z" fill="#e07820"/>
+        <path d="M132 88 Q156 62 162 36 Q164 22 152 26 Q142 30 140 52 Q136 70 130 84Z" fill="#c86818"/>
+        <path d="M124 80 Q142 52 144 28 Q145 14 134 20 Q124 26 126 48 Q126 64 122 78Z" fill="#dc7820"/>
+        <path d="M114 74 Q124 44 120 22 Q118 10 108 18 Q100 24 104 46 Q108 62 112 72Z" fill="#c86018"/>
+        <ellipse cx="100" cy="62" rx="14" ry="26" fill="#d47018" transform="rotate(-3,100,62)"/>
+        <ellipse cx="100" cy="58" rx="9" ry="20" fill="#e87e22" transform="rotate(2,100,58)"/>
+        <!-- head -->
+        <ellipse cx="100" cy="128" rx="54" ry="52" fill="url(#hfur1)" filter="url(#hs1)"/>
+        <ellipse cx="46" cy="130" rx="16" ry="19" fill="#b85814"/>
+        <ellipse cx="46" cy="130" rx="9" ry="11" fill="#6a2e0a" opacity="0.8"/>
+        <ellipse cx="154" cy="130" rx="16" ry="19" fill="#b85814"/>
+        <ellipse cx="154" cy="130" rx="9" ry="11" fill="#6a2e0a" opacity="0.8"/>
+        <ellipse cx="100" cy="132" rx="42" ry="44" fill="url(#hface1)"/>
+        <ellipse cx="100" cy="152" rx="28" ry="20" fill="#c8906a"/>
+        <ellipse cx="100" cy="148" rx="20" ry="14" fill="#d09a78" opacity="0.5"/>
+        <path d="M66 106 Q100 96 134 106" stroke="#1a0a04" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.5"/>
+        <!-- eyes -->
+        <circle cx="80" cy="118" r="13" fill="white" opacity="0.96"/>
+        <circle cx="81" cy="119" r="8" fill="#6b3818"/>
+        <circle cx="82" cy="120" r="5" fill="#0e0604"/>
+        <circle cx="77" cy="115" r="3.5" fill="white" opacity="0.95"/>
+        <circle cx="120" cy="118" r="13" fill="white" opacity="0.96"/>
+        <circle cx="121" cy="119" r="8" fill="#6b3818"/>
+        <circle cx="122" cy="120" r="5" fill="#0e0604"/>
+        <circle cx="117" cy="115" r="3.5" fill="white" opacity="0.95"/>
+        <!-- nose -->
+        <ellipse cx="94" cy="146" rx="4" ry="3" fill="#180a04" opacity="0.75"/>
+        <ellipse cx="106" cy="146" rx="4" ry="3" fill="#180a04" opacity="0.75"/>
+        <circle cx="93" cy="145" r="1.5" fill="rgba(255,255,255,0.28)"/>
+        <circle cx="105" cy="145" r="1.5" fill="rgba(255,255,255,0.28)"/>
+        <!-- mouth -->
+        <path d="M82 160 Q100 172 118 160" fill="#1a0c06" opacity="0.5"/>
+        <path d="M86 160 Q100 168 114 160" fill="#c07866" opacity="0.5"/>
+        <!-- bow -->
+        <path d="M84 72 Q92 60 100 66 Q92 74 84 72Z" fill="#e82030"/>
+        <path d="M84 72 Q90 64 100 66 Q91 70 84 72Z" fill="#ff5060" opacity="0.6"/>
+        <path d="M116 72 Q108 60 100 66 Q108 74 116 72Z" fill="#e82030"/>
+        <path d="M116 72 Q110 64 100 66 Q109 70 116 72Z" fill="#ff5060" opacity="0.6"/>
+        <ellipse cx="100" cy="66" rx="5.5" ry="4.5" fill="#c01828"/>
+        <ellipse cx="100" cy="65" rx="3.5" ry="2.5" fill="#f04050" opacity="0.8"/>
+        <!-- glow ring -->
+        <rect width="200" height="200" rx="44" stroke="#2dcaaa" stroke-width="2" fill="none" opacity="0.25"/>
+      </svg>
+    </div>
+
+    <!-- Animated claim: Money + Key = Monkey -->
+    <div class="mk-claim">
+      <div class="mk-morph-wrap">
+        <div class="mk-money-row">
+          <span class="mk-txt-money" data-en="Money" data-cs="Money">Money</span>
+          <span class="mk-txt-plus">+</span>
+          <span class="mk-txt-key" data-en="Key" data-cs="Key">Key</span>
+        </div>
+        <div class="mk-monkey-row">
+          <span class="mk-txt-monkey"><span class="mk-m1" data-en="Mon" data-cs="Mon">Mon</span><span class="mk-m2" data-en="key" data-cs="key">key</span></span>
+        </div>
+      </div>
+      <div class="mk-unlock" data-en="Unlock more value" data-cs="Odemkni více hodnoty">Unlock more value</div>
+    </div>
     <h1><span class="accent" data-en="Beyond" data-cs="Víc než">Beyond</span><br><span data-en="the Voucher" data-cs="jen voucher">the Voucher</span></h1>
     <p class="hero-sub" data-en="One platform for vouchers, loyalty programs, discount systems, and full payment infrastructure — including card products and merchant integration." data-cs="Jedna platforma pro vouchery, věrnostní programy, slevové systémy a kompletní platební infrastrukturu — včetně karetních produktů a napojení na obchodníky.">One platform for vouchers, loyalty programs, discount systems, and full payment infrastructure — including card products and merchant integration.</p>
     <div class="hero-actions">
@@ -866,6 +1280,94 @@
 
   <div class="hero-visual">
     <div class="hero-visual-wrap">
+
+      <!-- VOUCHER — top, further, tilted -->
+      <div class="v3d-voucher">
+        <div class="v3d-bg"></div>
+        <div class="v3d-grid"></div>
+        <div class="v3d-shimmer"></div>
+        <div class="v3d-content">
+          <div class="v3d-top">
+            <div>
+              <div class="v3d-brand-label">Passquare</div>
+              <div class="v3d-title">Gift <span>Voucher</span></div>
+              <div class="v3d-subtitle">Powered by voucherons</div>
+            </div>
+            <div class="v3d-monkey-mini">
+              <svg viewBox="0 0 200 200" width="56" height="56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="h3bg" cx="40%" cy="30%" r="70%"><stop offset="0%" stop-color="#1a9a82"/><stop offset="100%" stop-color="#061a1a"/></radialGradient>
+                  <radialGradient id="h3fur" cx="50%" cy="35%" r="65%"><stop offset="0%" stop-color="#e07820"/><stop offset="100%" stop-color="#8a3e0e"/></radialGradient>
+                  <radialGradient id="h3face" cx="50%" cy="45%" r="60%"><stop offset="0%" stop-color="#2e1608"/><stop offset="100%" stop-color="#1a0c04"/></radialGradient>
+                </defs>
+                <rect width="200" height="200" rx="44" fill="url(#h3bg)"/>
+                <path d="M68 88 Q44 62 38 36 Q36 22 48 26 Q60 52 70 84Z" fill="#c86818"/>
+                <path d="M132 88 Q156 62 162 36 Q164 22 152 26 Q140 52 130 84Z" fill="#c86818"/>
+                <ellipse cx="100" cy="62" rx="14" ry="26" fill="#d47018"/>
+                <ellipse cx="100" cy="128" rx="54" ry="52" fill="url(#h3fur)"/>
+                <ellipse cx="46" cy="130" rx="16" ry="19" fill="#b85814"/>
+                <ellipse cx="154" cy="130" rx="16" ry="19" fill="#b85814"/>
+                <ellipse cx="100" cy="132" rx="42" ry="44" fill="url(#h3face)"/>
+                <ellipse cx="100" cy="152" rx="28" ry="20" fill="#c8906a"/>
+                <circle cx="80" cy="118" r="13" fill="white" opacity="0.96"/>
+                <circle cx="82" cy="120" r="5" fill="#0e0604"/>
+                <circle cx="77" cy="115" r="3.5" fill="white"/>
+                <circle cx="120" cy="118" r="13" fill="white" opacity="0.96"/>
+                <circle cx="122" cy="120" r="5" fill="#0e0604"/>
+                <circle cx="117" cy="115" r="3.5" fill="white"/>
+                <path d="M84 72 Q92 60 100 66 Q92 74 84 72Z" fill="#e82030"/>
+                <path d="M116 72 Q108 60 100 66 Q108 74 116 72Z" fill="#e82030"/>
+                <ellipse cx="100" cy="66" rx="5.5" ry="4.5" fill="#c01828"/>
+                <rect width="200" height="200" rx="44" stroke="#2dcaaa" stroke-width="2" fill="none" opacity="0.25"/>
+              </svg>
+            </div>
+          </div>
+          <div class="v3d-divider">
+            <div class="v3d-notch"></div>
+            <div class="v3d-perf"></div>
+            <div class="v3d-notch"></div>
+          </div>
+          <div class="v3d-middle">
+            <div class="v3d-gift-tag">
+              <div class="v3d-dot"></div>
+              <span class="v3d-gift-label">Gift Voucher · Dárkový poukaz</span>
+            </div>
+            <div>
+              <div class="v3d-for-label">Pro · For</div>
+              <div class="v3d-for-name">___________________</div>
+            </div>
+            <div class="v3d-meta">
+              <div>
+                <div class="v3d-meta-label">Platnost do</div>
+                <div class="v3d-meta-value">31. 12. 2025</div>
+              </div>
+              <div>
+                <div class="v3d-meta-label">Kód · Code</div>
+                <div class="v3d-code">PSQ–GIFT–2025</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="v3d-stub">
+          <div class="v3d-stub-logo">
+            <svg viewBox="0 0 52 52" width="22" height="22" fill="none">
+              <defs><linearGradient id="v3sl" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4de8c8"/><stop offset="100%" stop-color="#1aaa90"/></linearGradient></defs>
+              <rect x="2" y="3" width="48" height="46" rx="10" fill="url(#v3sl)"/>
+              <line x1="38" y1="3" x2="38" y2="49" stroke="rgba(6,26,26,0.25)" stroke-width="1.5" stroke-dasharray="4 3"/>
+              <circle cx="2" cy="26" r="6.5" fill="#061a1a"/>
+              <circle cx="50" cy="26" r="6.5" fill="#061a1a"/>
+              <polyline points="12,17 26,38 40,17" stroke="rgba(6,26,26,0.55)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <div>
+              <div class="v3d-stub-wm"><span class="w1">voucher</span><span class="w2">ons</span></div>
+              <div class="v3d-stub-claim">Unlock more value</div>
+            </div>
+          </div>
+          <div class="v3d-barcode" id="hbc"></div>
+        </div>
+      </div>
+
+      <!-- PAYMENT CARD — bottom, closer, different tilt -->
       <div class="card-3d-back"></div>
       <div class="card-3d">
         <div class="card-chip"></div>
@@ -873,6 +1375,7 @@
         <div class="card-name">VOUCHERON CARD</div>
         <div class="card-logo">Vs●</div>
       </div>
+
     </div>
   </div>
 </section>
@@ -1463,6 +1966,17 @@
 </footer>
 
 <script>
+// ── HERO BARCODE ──
+const hbc = document.getElementById('hbc');
+if (hbc) {
+  [20,12,20,8,16,20,10,20,14,20,8,20,16,10,20,12,8,20].forEach(h => {
+    const b = document.createElement('div');
+    b.className = 'v3d-bar';
+    b.style.height = h + 'px';
+    hbc.appendChild(b);
+  });
+}
+
 // ── PARTICLES ──
 const container = document.getElementById('particles');
 for (let i = 0; i < 20; i++) {
